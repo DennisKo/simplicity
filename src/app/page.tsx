@@ -1,14 +1,13 @@
-import { SearchInput } from '@/components/SearchInput';
-import { slugify } from '@/lib/utils';
-
-import { redirect } from 'next/navigation';
+import { nanoid } from 'nanoid'
+import { AI } from '../lib/actions'
+import { Chat } from '@/components/Chat'
 
 export default function Home() {
+  const id = nanoid()
+
   return (
-    <div className="max-w-2xl mx-auto ">
-      <div className="min-h-screen flex justify-center items-center">
-        <SearchInput />
-      </div>
-    </div>
-  );
+    <AI initialAIState={{ chatId: id, interactions: [], messages: [] }}>
+      <Chat id={id} />
+    </AI>
+  )
 }

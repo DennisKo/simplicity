@@ -1,13 +1,13 @@
-import { Results } from '@/components/Results';
-import { continueConversation } from './actions';
-import { Suspense } from 'react';
+import { Results } from '@/components/Results'
+import { continueConversation } from '../../../lib/actions'
+import { Suspense } from 'react'
 
 export default async function SearchPage({
-  params,
+  params
 }: {
-  params: { query: string };
+  params: { query: string }
 }) {
-  const query = decodeURIComponent(params.query);
+  const query = decodeURIComponent(params.query)
 
   return (
     <div>
@@ -15,5 +15,5 @@ export default async function SearchPage({
         <Results query={query} />
       </Suspense>
     </div>
-  );
+  )
 }
