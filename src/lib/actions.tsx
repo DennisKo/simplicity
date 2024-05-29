@@ -16,6 +16,9 @@ import { SkeletonCard } from '@/components/SkeletonCard'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
+export const maxDuration = 25 // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic'
+
 async function searchAction(input: string) {
   'use server'
   try {
