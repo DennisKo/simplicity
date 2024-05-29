@@ -17,7 +17,7 @@ export const SearchInput = ({ search }) => {
 
   const exampleQueries = [
     'What is the weather in New York?',
-    'Whats the stock price of Nvidia?',
+    'What can we do to stop climate change?',
     'Can dogs eat chocolate?',
     'What is the height of Mount Everest?'
   ]

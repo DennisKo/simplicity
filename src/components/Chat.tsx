@@ -7,24 +7,19 @@ import { useState } from 'react'
 import { StreamableTextUI } from './StreamableTextUI'
 import { Layers, Lightbulb } from 'lucide-react'
 import { Skeleton } from './ui/skeleton'
-import { SkeletonCard } from './SkeletonCard'
+import { SkeletonGrid } from './SkeletonGrid'
 
 export const Chat = ({ id }: { id: string }) => {
   const [ui, setUI] = useUIState<typeof AI>()
   const { searchAction } = useActions()
   const [isSearching, setIsSearching] = useState(false)
-  const [summary, setSummary] = useState('')
   const search = async (query: string) => {
     setIsSearching(true)
 
-    const sources = await searchAction(query)
-    setUI(currentUI => ({ ...currentUI, sources }))
-
-    for await (const value of readStreamableValue(sources.text)) {
-      setSummary(value)
-    }
+    const results = await searchAction(query)
+    setUI(currentUI => ({ ...currentUI, ...results }))
   }
-
+  console.log('ui', ui.answerUI)
   return (
     <div className="max-w-3xl mx-auto p-6">
       {!isSearching ? (
@@ -38,13 +33,13 @@ export const Chat = ({ id }: { id: string }) => {
               <Layers />
               Sources
             </h2>
-            {ui.sources?.display}
+            {ui.display}
 
             <h2 className="flex items-center gap-2 font-bold text-xl text-gray-700">
               <Lightbulb />
               Answer
             </h2>
-            <StreamableTextUI streamableValue={summary} />
+            <div>{ui.answerUI}</div>
           </div>
         </>
       )}

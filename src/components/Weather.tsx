@@ -19,7 +19,7 @@ interface WeatherProps {
 }
 export const Weather = ({ city, unit, weather }: WeatherProps) => {
   return (
-    <div className="max-w-md border-1">
+    <div className="border-1">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold">{city}</h2>
       </div>
