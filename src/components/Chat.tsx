@@ -1,32 +1,52 @@
 'use client'
 
 import { AI } from '@/lib/actions'
-import { Results } from '@/components/Results'
 import { SearchInput } from '@/components/SearchInput'
-import { useActions, useUIState } from 'ai/rsc'
+import { readStreamableValue, useActions, useUIState } from 'ai/rsc'
+import { useState } from 'react'
+import { StreamableTextUI } from './StreamableTextUI'
+import { Layers, Lightbulb } from 'lucide-react'
+import { Skeleton } from './ui/skeleton'
+import { SkeletonCard } from './SkeletonCard'
 
 export const Chat = ({ id }: { id: string }) => {
-  const [messages, setMessages] = useUIState<typeof AI>()
-  const { continueConversation } = useActions()
-
+  const [ui, setUI] = useUIState<typeof AI>()
+  const { searchAction } = useActions()
+  const [isSearching, setIsSearching] = useState(false)
+  const [summary, setSummary] = useState('')
   const search = async (query: string) => {
-    setMessages(currentConversation => [
-      ...currentConversation,
-      { id, role: 'user', display: query }
-    ])
+    setIsSearching(true)
 
-    const message = await continueConversation(query)
+    const sources = await searchAction(query)
+    setUI(currentUI => ({ ...currentUI, sources }))
 
-    setMessages(currentConversation => [...currentConversation, message])
+    for await (const value of readStreamableValue(sources.text)) {
+      setSummary(value)
+    }
   }
+
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      {messages.length === 0 ? (
+    <div className="max-w-3xl mx-auto p-6">
+      {!isSearching ? (
         <div className="pt-20  flex justify-center items-center">
           <SearchInput search={search} />
         </div>
       ) : (
-        <Results messages={messages} />
+        <>
+          <div className="flex flex-col gap-y-6">
+            <h2 className="flex items-center gap-2 font-bold text-xl text-gray-700">
+              <Layers />
+              Sources
+            </h2>
+            {ui.sources?.display}
+
+            <h2 className="flex items-center gap-2 font-bold text-xl text-gray-700">
+              <Lightbulb />
+              Answer
+            </h2>
+            <StreamableTextUI streamableValue={summary} />
+          </div>
+        </>
       )}
     </div>
   )

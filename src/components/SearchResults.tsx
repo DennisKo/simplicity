@@ -1,12 +1,44 @@
-export const SearchResults = ({ searchResults }) => {
+import Link from 'next/link'
+
+export const SearchResultsWithLink = ({ searchResults }) => {
   return (
-    <div>
-      {searchResults.map((result) => (
-        <div key={result.url}>{result.title}</div>
-      ))}
+    <div className="">
+      <div className="grid grid-cols-2 gap-4">
+        {searchResults?.map(result => (
+          <Link href={result.url} key={result.url} target="_blank">
+            <div className="flex flex-col gap-3 p-3 rounded-md bg-gray-100 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+              <div className="flex items-center gap-2">
+                {result.meta_url?.favicon && (
+                  <img
+                    alt="Favicon"
+                    className="w-5 h-5"
+                    height={20}
+                    src={result.meta_url.favicon}
+                    style={{
+                      aspectRatio: '20/20',
+                      objectFit: 'cover'
+                    }}
+                    width={20}
+                  />
+                )}
+                <h3 className="text-sm font-semibold line-clamp-1">
+                  {result.title}
+                </h3>
+              </div>
+              <div
+                className="text-sm text-gray-500 overflow-hidden line-clamp-2"
+                dangerouslySetInnerHTML={{ __html: result.description }}
+              ></div>
+              <div className="text-xs text-gray-500 font-semibold line-clamp-1 -mt-1">
+                {result.profile.name}
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
-  );
-};
+  )
+}
 
 // {
 //     title: 'r/explainlikeimfive on Reddit: ELI5 - How do batteries work?',
