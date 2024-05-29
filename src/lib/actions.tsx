@@ -13,6 +13,7 @@ import { streamText } from 'ai'
 import { Weather } from '@/components/Weather'
 import { getForecastWeather } from './weather'
 import { SkeletonCard } from '@/components/SkeletonCard'
+import Markdown from 'react-markdown'
 
 async function searchAction(input: string) {
   'use server'
@@ -44,7 +45,7 @@ async function searchAction(input: string) {
                 if (chunk.answer) {
                   chunks.push(chunk.answer)
 
-                  answerUI.update(chunks.join(''))
+                  answerUI.update(<Markdown>{chunks.join('')}</Markdown>)
                 }
               }
             }
