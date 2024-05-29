@@ -14,6 +14,7 @@ import { Weather } from '@/components/Weather'
 import { getForecastWeather } from './weather'
 import { SkeletonCard } from '@/components/SkeletonCard'
 import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 async function searchAction(input: string) {
   'use server'
@@ -45,7 +46,11 @@ async function searchAction(input: string) {
                 if (chunk.answer) {
                   chunks.push(chunk.answer)
 
-                  answerUI.update(<Markdown>{chunks.join('')}</Markdown>)
+                  answerUI.update(
+                    <Markdown remarkPlugins={[remarkGfm]}>
+                      {chunks.join('')}
+                    </Markdown>
+                  )
                 }
               }
             }
