@@ -1,5 +1,3 @@
-'use server'
-
 import { createAI, createStreamableUI } from 'ai/rsc'
 import { nanoid } from 'nanoid'
 import { AIState, UIState } from '@/types'
